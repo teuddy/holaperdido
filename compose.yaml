@@ -14,12 +14,17 @@ services:
       - react-express
     depends_on:
       - backend
-
   backend:
     restart: always
     build:
       context: backend
       target: development
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - MONGODB_URI=${MONGODB_URI}
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
@@ -28,8 +33,6 @@ services:
     networks:
       - express-mongo
       - react-express
-    expose: 
-      - 3000
   mongo:
     restart: always
     image: mongo:4.2.0
